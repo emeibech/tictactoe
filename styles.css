@@ -14,10 +14,13 @@ body {
     grid-template-columns: repeat(3, 1fr);
     border: 1px solid saddlebrown;
     margin-top: 200px;
-    height: min(600px, 50vh);
-    width: min(600px, 90vw);
 }
 
 .gameboard div {
     border: 1px solid saddlebrown;
+    display: grid;
+    place-items: center;
+    height: min(20vh, 200px);
+    width: min(30vw, 200px);
+    font-size: calc(4rem + 2vw);
 }
