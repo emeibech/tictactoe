@@ -1,0 +1,23 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    place-items: center;
+}
+
+.gameboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid saddlebrown;
+    margin-top: 200px;
+    height: min(600px, 50vh);
+    width: min(600px, 90vw);
+}
+
+.gameboard div {
+    border: 1px solid saddlebrown;
+}
