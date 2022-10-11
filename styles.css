@@ -20,7 +20,7 @@ body {
     border: 1px solid saddlebrown;
     display: grid;
     place-items: center;
-    height: min(20vh, 200px);
+    height: min(18vh, 200px);
     width: min(30vw, 200px);
     font-size: calc(4rem + 2vw);
 }
