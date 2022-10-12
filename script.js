@@ -6,17 +6,20 @@ const gameObj = (() => {
     }
 
     //get the boxes' data attributes and push them to gameboard array above
-    const getBoxes = (() => {
+    const getBoxes = () => {
+
         document.querySelectorAll('.gameboard > div')
-            .forEach(box => gameboard.push(Number(box.getAttribute('data-box'))));
-    })();
+            .forEach(box => gameboard.splice(Number(box.getAttribute('data-box')), 1, Number(box.getAttribute('data-box'))));
+    };
 
     return {
         gameboard,
         nullCounter,
+        getBoxes,
     }
 })();
 
+gameObj.getBoxes();
 //factory function for creating player objects
 const player = () => {
 
@@ -99,6 +102,7 @@ const gameLogic = (() => {
         }
     }
 
+    //a player must have at least one of these combinations in ther markedBoxes array to win
     const winningConditions = [
         ['0', '1', '2'],
         ['3', '4', '5'],
@@ -111,7 +115,6 @@ const gameLogic = (() => {
     ]
 
     const determineWinner = () => {
-
         //only executes after four turns
         if(gameObj.nullCounter().length > 4) {
             let didPlayer1Win, didPlayer2Win = null;
@@ -139,10 +142,20 @@ const gameLogic = (() => {
             });
 
             //alert winner if one of the players matched one of the winning conditions
-            //change the alert later with UI changes
-            if(didPlayer1Win == true) alert(`Yay! Player 1 Wins`);
-            if(didPlayer2Win == true) alert(`Yay! Player 2 Wins`);
+            if(didPlayer1Win == true) {
+                clearObjects();
+            };
+            if(didPlayer2Win == true) {
+                clearObjects();
+            };
         }
+    }
+
+    //clear gameboard array and player marked boxes array when the game is over
+    const clearObjects = () => {
+        gameObj.getBoxes();
+        player1.markedBoxes = [];
+        player2.markedBoxes = [];
     }
 })();
 
