@@ -1,13 +1,15 @@
 const gameObj = (() => {
     const gameboard = [];
 
+    //useful for controlling game logic and game flow
     const nullCounter = () => {
         return gameboard.filter(e => e == null);
     }
 
-    //get the boxes' data attributes and push them to gameboard array above
+    //get the boxes' data attributes and push them to gameboard array
     const getBoxes = () => {
-
+        //this also replaces the previous items in the gameboard array
+        //(necessary to start next round)
         document.querySelectorAll('.gameboard > div')
             .forEach(box => gameboard.splice(Number(box.getAttribute('data-box')), 1, Number(box.getAttribute('data-box'))));
     };
@@ -20,6 +22,7 @@ const gameObj = (() => {
 })();
 
 gameObj.getBoxes();
+
 //factory function for creating player objects
 const player = () => {
 
@@ -75,7 +78,7 @@ const gameLogic = (() => {
         
         //if it is inside the array, remove it and replace with null
         //when a box with null data attribute is clicked, the code below won't execute
-        //this is to ensure that a box won't be processed twice
+        //this is to ensure that the same box won't be processed twice
         if(isActive == true) {
             gameObj.gameboard.splice(boxNumber, 1, null);
             assignBox(boxNumber);
@@ -119,7 +122,7 @@ const gameLogic = (() => {
         if(gameObj.nullCounter().length > 4) {
             let didPlayer1Win, didPlayer2Win = null;
             
-            //checks if player 1's marked boxes matches any of the winning conditions
+            //checks if player 1's marked boxes match any of the winning conditions
             winningConditions.forEach(arr => {
                 let counter = 0;
                 arr.forEach(item => {
@@ -130,7 +133,7 @@ const gameLogic = (() => {
                 if(counter > 2) didPlayer1Win = true;
             });
             
-            //checks if player 2's marked boxes matches any of the winning conditions
+            //checks if player 2's marked boxes match any of the winning conditions
             winningConditions.forEach(arr => {
                 let counter = 0;
                 arr.forEach(item => {
@@ -150,7 +153,7 @@ const gameLogic = (() => {
                 clearObjects();
                 console.log('Player 2 Wins!')
             };
-            //log draw if no player matched on of the winning conditions
+            //log draw if no player matched one of the winning conditions
             if(didPlayer1Win == null && didPlayer2Win == null && gameObj.nullCounter().length == 9) {
                 clearObjects();
                 console.log('Draw!')
