@@ -141,13 +141,20 @@ const gameLogic = (() => {
                 if(counter > 2) didPlayer2Win = true;
             });
 
-            //alert winner if one of the players matched one of the winning conditions
+            //log winner if one of the players matched one of the winning conditions
             if(didPlayer1Win == true) {
                 clearObjects();
+                console.log('Player 1 Wins!')
             };
             if(didPlayer2Win == true) {
                 clearObjects();
+                console.log('Player 2 Wins!')
             };
+            //log draw if no player matched on of the winning conditions
+            if(didPlayer1Win == null && didPlayer2Win == null && gameObj.nullCounter().length == 9) {
+                clearObjects();
+                console.log('Draw!')
+            }
         }
     }
 
