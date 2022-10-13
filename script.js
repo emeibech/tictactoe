@@ -1,4 +1,5 @@
 const gameObj = (() => {
+
     const gameboard = [];
 
     //useful for controlling game logic and game flow
@@ -6,10 +7,8 @@ const gameObj = (() => {
         return gameboard.filter(e => e == null);
     }
 
-    //get the boxes' data attributes and push them to gameboard array
     const getBoxes = () => {
-        //this also replaces the previous items in the gameboard array
-        //(necessary to start next round)
+        //this replaces the previous items in the gameboard array
         document.querySelectorAll('.gameboard > div')
             .forEach(box => gameboard.splice(Number(box.getAttribute('data-box')), 1, Number(box.getAttribute('data-box'))));
     };
@@ -26,38 +25,36 @@ gameObj.getBoxes();
 //factory function for creating player objects
 const player = () => {
 
-    let playerIsActive = null;
+    let isActive = null;
 
-    const markedBoxes = [];
+    let markedBoxes = [];
 
     return {
-        playerIsActive,
+        isActive,
         markedBoxes,
     }
 }
 
-//create players
 const player1 = player();
 const player2 = player();
 
 //control players' turns
 const gameFlow = (() => {
     
-    //set player turn
     const setTurn = (() => {
-        player1.playerIsActive = true;
-        player2.playerIsActive = false;
+        player1.isActive = true;
+        player2.isActive = false;
     })();
 
     //switch turn when board is marked
     const changeTurn = () => {
         if(!(gameObj.nullCounter().length % 2 == 0)) {
-            player1.playerIsActive = false;
-            player2.playerIsActive = true;
+            player1.isActive = false;
+            player2.isActive = true;
         }
         if(gameObj.nullCounter().length % 2 == 0) {
-            player1.playerIsActive = true;
-            player2.playerIsActive = false;
+            player1.isActive = true;
+            player2.isActive = false;
         }
     }
 
@@ -68,24 +65,20 @@ const gameFlow = (() => {
 
 const gameLogic = (() => {
 
-    //process input
     const processInput = (e) => {
-        //get the target box data attribute number
+        //get target box number attribute
         const boxNumber = e.target.getAttribute('data-box');
 
-        //check if target box's number attribute is inside the gameboard array
-        const isActive = gameObj.gameboard.includes(Number(boxNumber));
+        //check if target box's number is still inside the gameboard array
+        const isNotTaken = gameObj.gameboard.includes(Number(boxNumber));
         
         //if it is inside the array, remove it and replace with null
         //when a box with null data attribute is clicked, the code below won't execute
-        //this is to ensure that the same box won't be processed twice
-        if(isActive == true) {
+        if(isNotTaken == true) {
             gameObj.gameboard.splice(boxNumber, 1, null);
             assignBox(boxNumber);
-            determineWinner();
-            console.log(player1.markedBoxes, player2.markedBoxes)
-            // console.log(player1.playerIsActive, player2.playerIsActive);
-            // console.log(gameObj.nullCounter().length)
+            isGameOver();
+            console.log(player1.markedBoxes, player2.markedBoxes);
             gameFlow.changeTurn();
         }
     }
@@ -95,17 +88,16 @@ const gameLogic = (() => {
         document.querySelector('.gameboard').addEventListener('click', processInput);
     })();
 
-    //assign box attrribute to players
+    //assign box number attrribute to players
     const assignBox = (boxNumber) => {
-        if(player1.playerIsActive == true) {
+        if(player1.isActive == true) {
             player1.markedBoxes.push(boxNumber);
         }
-        if(player2.playerIsActive == true) {
+        if(player2.isActive == true) {
             player2.markedBoxes.push(boxNumber);
         }
     }
 
-    //a player must have at least one of these combinations in ther markedBoxes array to win
     const winningConditions = [
         ['0', '1', '2'],
         ['3', '4', '5'],
@@ -117,32 +109,35 @@ const gameLogic = (() => {
         ['2', '4', '6'],
     ]
 
-    const determineWinner = () => {
+    const isGameOver = () => {
+
+        const determineWinner = (playerX) => {
+            let didPlayerWin = false;
+            //loop through winning conditions array
+            winningConditions.forEach(arr => {
+                let counter = 0;
+                //loop through the items of each array inside winning conditions array
+                arr.forEach(item => {
+                    //also loop through player's marked boxes array
+                    for(let i = 0; i < playerX.markedBoxes.length; i++) {
+                        //if an item in one of the winning conditions array matches
+                        // with player's marked boxes array, increment counter
+                        if(item == playerX.markedBoxes[i]) counter++;
+                    }
+                })
+                //counter will only be more than two if a player picked all three items
+                //inside one of the winning conditions array
+                if(counter > 2) didPlayerWin = true;
+            });
+            return didPlayerWin;
+        }
+
         //only executes after four turns
         if(gameObj.nullCounter().length > 4) {
-            let didPlayer1Win, didPlayer2Win = null;
-            
-            //checks if player 1's marked boxes match any of the winning conditions
-            winningConditions.forEach(arr => {
-                let counter = 0;
-                arr.forEach(item => {
-                    for(let i = 0; i < player1.markedBoxes.length; i++) {
-                        if(item == player1.markedBoxes[i]) counter++;
-                    }
-                })
-                if(counter > 2) didPlayer1Win = true;
-            });
-            
-            //checks if player 2's marked boxes match any of the winning conditions
-            winningConditions.forEach(arr => {
-                let counter = 0;
-                arr.forEach(item => {
-                    for(let i = 0; i < player2.markedBoxes.length; i++) {
-                        if(item == player2.markedBoxes[i]) counter++;
-                    }
-                })
-                if(counter > 2) didPlayer2Win = true;
-            });
+            let didPlayer1Win, didPlayer2Win = false;
+
+            if(didPlayer2Win == false) didPlayer1Win = determineWinner(player1);
+            if(didPlayer1Win == false) didPlayer2Win = determineWinner(player2);
 
             //log winner if one of the players matched one of the winning conditions
             if(didPlayer1Win == true) {
@@ -154,7 +149,7 @@ const gameLogic = (() => {
                 console.log('Player 2 Wins!')
             };
             //log draw if no player matched one of the winning conditions
-            if(didPlayer1Win == null && didPlayer2Win == null && gameObj.nullCounter().length == 9) {
+            if(didPlayer1Win == false && didPlayer2Win == false && gameObj.nullCounter().length == 9) {
                 clearObjects();
                 console.log('Draw!')
             }
