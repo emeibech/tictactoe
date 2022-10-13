@@ -2,7 +2,7 @@ const gameObj = (() => {
 
     const gameboard = [];
 
-    //useful for controlling game logic and game flow
+    //for controlling game logic and game flow
     const nullCounter = () => {
         return gameboard.filter(e => e == null);
     }
@@ -77,8 +77,9 @@ const gameLogic = (() => {
         if(isNotTaken == true) {
             gameObj.gameboard.splice(boxNumber, 1, null);
             assignBox(boxNumber);
+            ui.markBox(e);
             isGameOver();
-            console.log(player1.markedBoxes, player2.markedBoxes);
+            // console.log(player1.markedBoxes, player2.markedBoxes);
             gameFlow.changeTurn();
         }
     }
@@ -164,6 +165,15 @@ const gameLogic = (() => {
     }
 })();
 
-// const ui = (() => {
+const ui = (() => {
 
-// })();
+    const markBox = (e) => {
+        if(player1.isActive == true) e.target.textContent = 'X';
+        if(player2.isActive == true) e.target.textContent = 'O';
+    }
+
+    return {
+        markBox,
+    }
+
+})();
