@@ -16,11 +16,18 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+body p {
+    margin-top: 1rem;
+    text-align: center;
+    font-family: comic-neue;
+    cursor: pointer;
+}
+
 .gameboard {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     border: 1px solid saddlebrown;
-    margin-top: 200px;
+    margin-top: 20vh;
 }
 
 body div div {
@@ -36,4 +43,16 @@ body div div {
 .win {
     background-color: aquamarine;
     font-size: calc(5rem + 2.5vw)
+}
+
+.overlay {
+    opacity: 0.3;
+    position: absolute;
+    height: min(90vw, 600px);
+    width: min(90vw, 600px);
+    background-color: palevioletred;
+}
+
+.result {
+    font-size: calc(2rem + 5vw);
 }
