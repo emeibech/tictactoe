@@ -36,13 +36,13 @@ body div div {
     place-items: center;
     height: min(30vw, 200px);
     width: min(30vw, 200px);
-    font-size: calc(4rem + 2vw);
+    font-size: calc(3rem + 6vw);
     font-family: comic-neue;
 }
 
 .win {
     background-color: aquamarine;
-    font-size: calc(5rem + 2.5vw)
+    font-size: calc(4rem + 6vw)
 }
 
 .overlay {

@@ -14,9 +14,10 @@ const gameObj = (() => {
     };
 
     const clearObj = () => {
-        player1.markedBoxes = [];
-        player2.markedBoxes = [];
+        player1.markedBoxes.splice(0, player1.markedBoxes.length)
+        player2.markedBoxes.splice(0, player2.markedBoxes.length)
         gameObj.getBoxes();
+        gameFlow.setTurn();
     }
 
     return {
@@ -27,8 +28,6 @@ const gameObj = (() => {
         clearObj,
     }
 })();
-
-gameObj.getBoxes();
 
 //factory function for creating player objects
 const player = (name) => {
@@ -50,10 +49,10 @@ const player2 = player('Player 2');
 //control players' turns
 const gameFlow = (() => {
     
-    const setTurn = (() => {
+    const setTurn = () => {
         player1.isActive = true;
         player2.isActive = false;
-    })();
+    };
 
     //switch turn when board is marked
     const changeTurn = () => {
@@ -69,6 +68,7 @@ const gameFlow = (() => {
 
     return {
         changeTurn,
+        setTurn,
     }
 })();
 
@@ -79,28 +79,32 @@ const gameLogic = (() => {
     let didPlayer2Win = null;
 
     const processInput = (e) => {
-        //get target box number attribute
         const boxNumber = e.target.getAttribute('data-box');
+        if(typeof boxNumber === 'string') {
+            //get target box number attribute
+            const boxNumber = e.target.getAttribute('data-box');
 
-        //check if target box's number is still inside the gameboard array
-        const isNotTaken = gameObj.gameboard.includes(Number(boxNumber));
-        
-        //if it is inside the array, remove it and replace with null
-        //when a box with null data attribute is clicked, the code below won't execute
-        if(isNotTaken == true) {
-            gameObj.gameboard.splice(boxNumber, 1, null);
-            assignBox(boxNumber);
-            ui.markBoard(e);
-            determineWinner();
-            // console.log(player1.markedBoxes, player2.markedBoxes);
-            gameFlow.changeTurn();
+            //check if target box's number is still inside the gameboard array
+            const isNotTaken = gameObj.gameboard.includes(Number(boxNumber));
+            
+            //if it is inside the array, remove it and replace with null
+            //when a box with null data attribute is clicked, the code below won't execute
+            if(isNotTaken == true) {
+                gameObj.gameboard.splice(boxNumber, 1, null);
+                assignBox(boxNumber);
+                ui.markBoard(e);
+                determineWinner();
+                // console.log(player1.markedBoxes, player2.markedBoxes);
+                gameFlow.changeTurn();
+            }
         }
+
     }
 
     //event: get input from client that the above function will process
-    const getInput = (() => {
+    const getInput = () => {
         document.querySelector('.gameboard').addEventListener('click', processInput);
-    })();
+    };
 
     //assign box number attrribute to players
     const assignBox = (boxNumber) => {
@@ -154,25 +158,28 @@ const gameLogic = (() => {
         if(gameObj.nullCounter().length > 4) {
             if(didPlayer2Win == null) didPlayer1Win = matchBoxes(player1);
             if(didPlayer1Win == null) didPlayer2Win = matchBoxes(player2);
-            logWinner();
+            winner();
         }
     }
 
-    const logWinner = () => {
+    const winner = () => {
         //log winner if one of the players matched one of the winning conditions
         if(didPlayer1Win == true) {
             console.log('Player 1 Wins!');
-            ui.displayWinner()
+            ui.displayWinner();
+            document.addEventListener('click', gameObj.clearObj);
         };
         if(didPlayer2Win == true) {
             console.log('Player 2 Wins!');
             ui.displayWinner();
+            document.addEventListener('click', gameObj.clearObj);
         };
         //log draw if no player matched one of the winning conditions
         if(gameObj.nullCounter().length == 9) {
             ui.overlay();
             console.log('Draw!');
             ui.displayWinner();
+            document.addEventListener('click', gameObj.clearObj);
         }
     }
 
@@ -197,6 +204,7 @@ const gameLogic = (() => {
         getWinningBoxes,
         determineWinner,
         getWinner,
+        getInput,
     }
 
 })();
@@ -251,10 +259,25 @@ const ui = (() => {
             result(gameLogic.getWinner());
     }
 
+    // const clearBoard = () => {
+    //     gameObj.boxes.forEach(item => {
+    //         item.textContent = '';
+    //         item.classList.remove('win');
+    //     })
+    //     document.querySelector('body').removeChild(document.querySelector('.result'));
+    //     document.querySelector('.gameboard').removeChild(document.querySelector('.overlay'));
+    //     gameLogic.getInput();
+    // }
+
     return {
         markBoard,
         highlightWin,
         overlay,
         displayWinner,
+        // clearBoard,
     }
 })();
+
+document.addEventListener('DOMContentLoaded', gameFlow.setTurn);
+document.addEventListener('DOMContentLoaded', gameLogic.getInput);
+document.addEventListener('DOMContentLoaded', gameObj.getBoxes);
