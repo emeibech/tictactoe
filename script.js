@@ -22,23 +22,25 @@ const gameObj = (() => {
 
     const getPlayerNames = (e) => {
         e.preventDefault();
-        player1Name();
-        player2Name();
+        // player1Name();
+        // player2Name();
+        // location.reload();
+        player1.name = document.querySelector('#player1').value;
+        player2.name = document.querySelector('#player2').value;
         ui.exitForm();
-        location.reload();
     }
 
-    const player1Name = () => {
-        let name = document.querySelector('#player1').value;
-        let player1Name = name === '' ? 'Player 1' : name;
-        return player1Name
-    }
+    // const player1Name = () => {
+    //     let name = document.querySelector('#player1').value;
+    //     let player1Name = name === '' ? 'Player 1' : name;
+    //     return player1Name
+    // }
 
-    const player2Name = () => {
-        let name = document.querySelector('#player2').value;
-        let player2Name = name === '' ? 'Player 2' : name;
-        return player2Name;
-    }
+    // const player2Name = () => {
+    //     let name = document.querySelector('#player2').value;
+    //     let player2Name = name === '' ? 'Player 2' : name;
+    //     return player2Name;
+    // }
 
     return {
         gameboard,
@@ -47,8 +49,8 @@ const gameObj = (() => {
         getBoxes,
         clearObj,
         getPlayerNames,
-        player1Name,
-        player2Name,
+        // player1Name,
+        // player2Name,
     }
 })();
 
@@ -66,8 +68,8 @@ const player = (name) => {
     }
 }
 
-let player1 = player(`${gameObj.player1Name()}`);
-let player2 = player(`${gameObj.player2Name()}`);
+let player1 = player(`Player 1`);
+let player2 = player(`Player 2`);
 
 //control players' turns
 const gameFlow = (() => {

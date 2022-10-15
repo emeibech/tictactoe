@@ -47,7 +47,7 @@ body div div {
 }
 
 .win {
-    background-color: rgba(128, 255, 212, 0.6);
+    background-color: rgba(128, 255, 212, 0.8);
     font-size: calc(4rem + 6vw);
 }
 
@@ -60,27 +60,27 @@ body div div {
 }
 
 .result {
-    font-size: clamp(1rem, calc(1.3rem + 6vw), 6rem);
+    font-size: clamp(1rem, calc(1.3rem + 6vw), 4rem);
 }
 
 .buttons {
     /* border: 1px solid seagreen; */
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    margin-top: 20vh;
+    margin-top: 18vh;
     width: min(90vw, 600px);
     place-items: center;
 }
 
 .buttons button {
-background-color: rgba(234, 76, 137, 0.8);
-border-style: none;
-color: #ffffff;
-cursor: pointer;
-width: min(30vw, 200px);
-height: clamp(45px, calc(40px + 0.2vw), 60px);
-font-size: clamp(0.7rem, calc(0.7rem + 0.3vw), 2rem);
-padding: 8px;
+    background-color: rgba(234, 76, 137, 0.8);
+    border-style: none;
+    color: #ffffff;
+    cursor: pointer;
+    width: min(30vw, 200px);
+    height: clamp(45px, calc(40px + 0.2vw), 60px);
+    font-size: clamp(0.7rem, calc(0.7rem + 0.3vw), 2rem);
+    padding: 8px;
 }
 
 .change-name {
