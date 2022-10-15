@@ -34,7 +34,7 @@ const player = (name) => {
 
     let isActive = null;
 
-    let markedBoxes = [];
+    const markedBoxes = [];
 
     return {
         name,
@@ -60,7 +60,7 @@ const gameFlow = (() => {
             player1.isActive = false;
             player2.isActive = true;
         }
-        if(gameObj.nullCounter().length % 2 == 0) {
+        if(gameObj.nullCounter().length % 2 == 0 || gameObj.nullCounter().length == 0) {
             player1.isActive = true;
             player2.isActive = false;
         }
@@ -81,11 +81,10 @@ const gameLogic = (() => {
     const processInput = (e) => {
         const boxNumber = e.target.getAttribute('data-box');
         if(typeof boxNumber === 'string') {
-            //get target box number attribute
-            const boxNumber = e.target.getAttribute('data-box');
 
             //check if target box's number is still inside the gameboard array
             const isNotTaken = gameObj.gameboard.includes(Number(boxNumber));
+            console.log(gameObj.gameboard, isNotTaken, boxNumber)
             
             //if it is inside the array, remove it and replace with null
             //when a box with null data attribute is clicked, the code below won't execute
@@ -93,8 +92,7 @@ const gameLogic = (() => {
                 gameObj.gameboard.splice(boxNumber, 1, null);
                 assignBox(boxNumber);
                 ui.markBoard(e);
-                determineWinner();
-                // console.log(player1.markedBoxes, player2.markedBoxes);
+                console.log(player1.markedBoxes, player2.markedBoxes);
                 gameFlow.changeTurn();
             }
         }
@@ -102,9 +100,9 @@ const gameLogic = (() => {
     }
 
     //event: get input from client that the above function will process
-    const getInput = () => {
+    const getInput = (() => {
         document.querySelector('.gameboard').addEventListener('click', processInput);
-    };
+    })();
 
     //assign box number attrribute to players
     const assignBox = (boxNumber) => {
@@ -114,6 +112,7 @@ const gameLogic = (() => {
         if(player2.isActive == true) {
             player2.markedBoxes.push(boxNumber);
         }
+        determineWinner();
     }
 
     const winningConditions = [
@@ -146,8 +145,6 @@ const gameLogic = (() => {
         if(counter > 2) {
             didPlayerWin = true;
             matchedArray = index;
-            ui.highlightWin();
-            ui.overlay();
         };
         });
         return didPlayerWin;
@@ -165,21 +162,25 @@ const gameLogic = (() => {
     const winner = () => {
         //log winner if one of the players matched one of the winning conditions
         if(didPlayer1Win == true) {
+            ui.highlightWin();
+            ui.overlay();
             console.log('Player 1 Wins!');
-            ui.displayWinner();
-            document.addEventListener('click', gameObj.clearObj);
+            ui.displayResult();
+            document.querySelector('.overlay').addEventListener('click', ui.clearBoard);
         };
         if(didPlayer2Win == true) {
+            ui.highlightWin();
+            ui.overlay();
             console.log('Player 2 Wins!');
-            ui.displayWinner();
-            document.addEventListener('click', gameObj.clearObj);
+            ui.displayResult();
+            document.querySelector('.overlay').addEventListener('click', ui.clearBoard);
         };
         //log draw if no player matched one of the winning conditions
-        if(gameObj.nullCounter().length == 9) {
+        if(gameObj.nullCounter().length == 9 && didPlayer1Win == null && didPlayer2Win == null) {
             ui.overlay();
             console.log('Draw!');
-            ui.displayWinner();
-            document.addEventListener('click', gameObj.clearObj);
+            ui.displayResult();
+            document.querySelector('.overlay').addEventListener('click', ui.clearBoard);
         }
     }
 
@@ -204,7 +205,6 @@ const gameLogic = (() => {
         getWinningBoxes,
         determineWinner,
         getWinner,
-        getInput,
     }
 
 })();
@@ -238,7 +238,7 @@ const ui = (() => {
         gameObj.boxes[0].parentElement.appendChild(container);
     }
 
-    const displayWinner = () => {
+    const displayResult = () => {
             const result = (player) => {
                 if(player !== null && player.hasOwnProperty('name')) {
                     const body = document.querySelector('body');
@@ -247,7 +247,7 @@ const ui = (() => {
                     para.classList.add('result');
                     body.appendChild(para);
                 }
-                if(player == null) {
+                if(player === null) {
                     const body = document.querySelector('body');
                     const para = document.createElement('p');
                     para.textContent = 'Draw!';
@@ -259,25 +259,31 @@ const ui = (() => {
             result(gameLogic.getWinner());
     }
 
-    // const clearBoard = () => {
-    //     gameObj.boxes.forEach(item => {
-    //         item.textContent = '';
-    //         item.classList.remove('win');
-    //     })
-    //     document.querySelector('body').removeChild(document.querySelector('.result'));
-    //     document.querySelector('.gameboard').removeChild(document.querySelector('.overlay'));
-    //     gameLogic.getInput();
-    // }
+    const clearBoard = () => {
+        gameObj.boxes.forEach(item => {
+            item.textContent = '';
+            item.classList.remove('win');
+        })
+        const result = document.querySelector('.result');
+        const overlay = document.querySelector('.overlay');
+        console.log(result, overlay);
+        if(result !== null && overlay !== null) {
+            document.querySelector('body').removeChild(result);
+            document.querySelector('.gameboard').removeChild(overlay);
+        }
+        
+        gameObj.clearObj();
+    }
 
     return {
         markBoard,
         highlightWin,
         overlay,
-        displayWinner,
-        // clearBoard,
+        displayResult,
+        clearBoard,
     }
 })();
 
 document.addEventListener('DOMContentLoaded', gameFlow.setTurn);
-document.addEventListener('DOMContentLoaded', gameLogic.getInput);
 document.addEventListener('DOMContentLoaded', gameObj.getBoxes);
+document.querySelector('.reset').addEventListener('click', ui.clearBoard);
