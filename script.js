@@ -20,12 +20,35 @@ const gameObj = (() => {
         gameFlow.setTurn();
     }
 
+    const getPlayerNames = (e) => {
+        e.preventDefault();
+        player1Name();
+        player2Name();
+        ui.exitForm();
+        location.reload();
+    }
+
+    const player1Name = () => {
+        let name = document.querySelector('#player1').value;
+        let player1Name = name === '' ? 'Player 1' : name;
+        return player1Name
+    }
+
+    const player2Name = () => {
+        let name = document.querySelector('#player2').value;
+        let player2Name = name === '' ? 'Player 2' : name;
+        return player2Name;
+    }
+
     return {
         gameboard,
         boxes,
         nullCounter,
         getBoxes,
         clearObj,
+        getPlayerNames,
+        player1Name,
+        player2Name,
     }
 })();
 
@@ -43,8 +66,8 @@ const player = (name) => {
     }
 }
 
-const player1 = player('Player 1');
-const player2 = player('Player 2');
+let player1 = player(`${gameObj.player1Name()}`);
+let player2 = player(`${gameObj.player2Name()}`);
 
 //control players' turns
 const gameFlow = (() => {
@@ -84,7 +107,6 @@ const gameLogic = (() => {
 
             //check if target box's number is still inside the gameboard array
             const isNotTaken = gameObj.gameboard.includes(Number(boxNumber));
-            console.log(gameObj.gameboard, isNotTaken, boxNumber)
             
             //if it is inside the array, remove it and replace with null
             //when a box with null data attribute is clicked, the code below won't execute
@@ -92,7 +114,6 @@ const gameLogic = (() => {
                 gameObj.gameboard.splice(boxNumber, 1, null);
                 assignBox(boxNumber);
                 ui.markBoard(e);
-                console.log(player1.markedBoxes, player2.markedBoxes);
                 gameFlow.changeTurn();
             }
         }
@@ -160,25 +181,20 @@ const gameLogic = (() => {
     }
 
     const winner = () => {
-        //log winner if one of the players matched one of the winning conditions
         if(didPlayer1Win == true) {
             ui.highlightWin();
             ui.overlay();
-            console.log('Player 1 Wins!');
             ui.displayResult();
             document.querySelector('.overlay').addEventListener('click', ui.clearBoard);
         };
         if(didPlayer2Win == true) {
             ui.highlightWin();
             ui.overlay();
-            console.log('Player 2 Wins!');
             ui.displayResult();
             document.querySelector('.overlay').addEventListener('click', ui.clearBoard);
         };
-        //log draw if no player matched one of the winning conditions
         if(gameObj.nullCounter().length == 9 && didPlayer1Win == null && didPlayer2Win == null) {
             ui.overlay();
-            console.log('Draw!');
             ui.displayResult();
             document.querySelector('.overlay').addEventListener('click', ui.clearBoard);
         }
@@ -235,7 +251,8 @@ const ui = (() => {
 
     const overlay = () => {
         container.classList.add('overlay');
-        gameObj.boxes[0].parentElement.appendChild(container);
+        const aside = document.querySelector('.gameboard aside');
+        gameObj.boxes[0].parentElement.insertBefore(container, aside);
     }
 
     const displayResult = () => {
@@ -298,3 +315,4 @@ document.addEventListener('DOMContentLoaded', gameObj.getBoxes);
 document.querySelector('.reset').addEventListener('click', ui.clearBoard);
 document.querySelector('.exit').addEventListener('click', ui.exitForm);
 document.querySelector('.change-name').addEventListener('click', ui.showForm);
+document.querySelector('.form-group form').addEventListener('submit', gameObj.getPlayerNames);

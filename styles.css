@@ -101,15 +101,13 @@ padding: 8px;
 
 .form-group {
     position: absolute;
-    border: 1px solid slateblue;
     width: min(90vw, 600px);
     height: min(90vw, 600px);
-    opacity: 0.9;
+    padding: 40px;
 }
 
 form {
     /* border: 1px solid hotpink; */
-    border-top: 1px solid rgba(80, 80, 80, 0.2);
     border-left: 1px solid rgba(80, 80, 80, 0.2);
     box-shadow: 1px 1px 2px rgb(80, 80, 80);
     padding-inline: clamp(4px, calc(0.5rem + 0.5vw), 3rem);
@@ -125,7 +123,7 @@ label {
 }
 
 input {
-    border: 1px solid coral;
+    border: 1px solid rgba(50, 50, 50, 0.5);
     padding-block: 2px;
     padding-inline: 6px;
     width: clamp(150px, calc(180px + 6vw), 360px);
