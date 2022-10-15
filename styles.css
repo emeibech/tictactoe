@@ -32,7 +32,7 @@ body p {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     border: 1px solid rgb(203, 145, 221);
-    margin-top: 1rem;
+    margin-top: 2vh;
     color: #ffffff;
 }
 
@@ -60,30 +60,103 @@ body div div {
 }
 
 .result {
-    font-size: calc(2rem + 5vw);
+    font-size: clamp(1rem, calc(1.3rem + 6vw), 6rem);
 }
 
 .buttons {
     /* border: 1px solid seagreen; */
-    display: flex;
-    gap: calc(2px + 5vw);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     margin-top: 20vh;
     width: min(90vw, 600px);
-    justify-content: center;
+    place-items: center;
 }
 
 .buttons button {
 background-color: rgba(234, 76, 137, 0.8);
-border-radius: 3rem;
 border-style: none;
 color: #ffffff;
 cursor: pointer;
-width: 140px;
-height: 40px;
-font-size: 0.8rem;
-padding: 4px;
+width: min(30vw, 200px);
+height: clamp(45px, calc(40px + 0.2vw), 60px);
+font-size: clamp(0.7rem, calc(0.7rem + 0.3vw), 2rem);
+padding: 8px;
+}
+
+.change-name {
+    grid-column: 1 / span 1;
+}
+
+.reset {
+    grid-column: 2 / span 1;
 }
 
 .buttons button:active {
     background-color: rgba(239, 81, 142, 0.8);
+}
+
+.hide-form {
+    display: none;
+}
+
+.form-group {
+    position: absolute;
+    border: 1px solid slateblue;
+    width: min(90vw, 600px);
+    height: min(90vw, 600px);
+    opacity: 0.9;
+}
+
+form {
+    /* border: 1px solid hotpink; */
+    border-top: 1px solid rgba(80, 80, 80, 0.2);
+    border-left: 1px solid rgba(80, 80, 80, 0.2);
+    box-shadow: 1px 1px 2px rgb(80, 80, 80);
+    padding-inline: clamp(4px, calc(0.5rem + 0.5vw), 3rem);
+    padding-block: 1rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' %3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' x2='0' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%2380F'/%3E%3Cstop offset='1' stop-color='%23f40'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpattern id='b' width='24' height='24' patternUnits='userSpaceOnUse'%3E%3Ccircle fill='%23ffffff' cx='12' cy='12' r='12'/%3E%3C/pattern%3E%3Crect width='100%25' height='100%25' fill='url(%23a)'/%3E%3Crect width='100%25' height='100%25' fill='url(%23b)' fill-opacity='0.1'/%3E%3C/svg%3E");
+}
+
+label {
+    margin-top: 1rem;
+}
+
+input {
+    border: 1px solid coral;
+    padding-block: 2px;
+    padding-inline: 6px;
+    width: clamp(150px, calc(180px + 6vw), 360px);
+    background-color: rgb(243, 144, 194);
+    color: #000;
+}
+
+form button {
+    background-color: rgb(203, 104, 154);
+    margin-top: 1rem;
+    border: none;
+    align-self: flex-end;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.submit {
+    box-shadow: 1px 1px 2px rgba(55, 55, 55, 0.9);
+    padding: 8px;
+    width: 6rem;
+}
+
+.exit {
+    margin-top: 0;
+    font-size: 1rem;
+
+    background-color: rgb(216, 87, 87);
+    color: cornsilk;
+    display: grid;
+    place-items: center;
+    padding-inline: 4px;
+    padding-top: 1px;
+    border: 1px solid rgba(80, 80, 80, 0.3);
 }

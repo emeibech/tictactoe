@@ -266,7 +266,6 @@ const ui = (() => {
         })
         const result = document.querySelector('.result');
         const overlay = document.querySelector('.overlay');
-        console.log(result, overlay);
         if(result !== null && overlay !== null) {
             document.querySelector('body').removeChild(result);
             document.querySelector('.gameboard').removeChild(overlay);
@@ -275,15 +274,27 @@ const ui = (() => {
         gameObj.clearObj();
     }
 
+    const exitForm = () => {
+        document.querySelector('.form-group').classList.add('hide-form');
+    }
+
+    const showForm = () => {
+        document.querySelector('.form-group').classList.remove('hide-form');
+    }
+
     return {
         markBoard,
         highlightWin,
         overlay,
         displayResult,
         clearBoard,
+        exitForm,
+        showForm,
     }
 })();
 
 document.addEventListener('DOMContentLoaded', gameFlow.setTurn);
 document.addEventListener('DOMContentLoaded', gameObj.getBoxes);
 document.querySelector('.reset').addEventListener('click', ui.clearBoard);
+document.querySelector('.exit').addEventListener('click', ui.exitForm);
+document.querySelector('.change-name').addEventListener('click', ui.showForm);
