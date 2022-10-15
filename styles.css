@@ -11,9 +11,13 @@
 }
 
 body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     display: grid;
     place-items: center;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    /* background from https://www.svgbackgrounds.com */
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' %3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' x2='0' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%2380F'/%3E%3Cstop offset='1' stop-color='%23f40'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpattern id='b' width='24' height='24' patternUnits='userSpaceOnUse'%3E%3Ccircle fill='%23ffffff' cx='12' cy='12' r='12'/%3E%3C/pattern%3E%3Crect width='100%25' height='100%25' fill='url(%23a)'/%3E%3Crect width='100%25' height='100%25' fill='url(%23b)' fill-opacity='0.1'/%3E%3C/svg%3E");
+    background-attachment: fixed;
 }
 
 body p {
@@ -21,17 +25,19 @@ body p {
     text-align: center;
     font-family: comic-neue;
     cursor: pointer;
+    color: #ffffff;
 }
 
 .gameboard {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    border: 1px solid saddlebrown;
-    margin-top: 20vh;
+    border: 1px solid rgb(203, 145, 221);
+    margin-top: 1rem;
+    color: #ffffff;
 }
 
 body div div {
-    border: 1px solid saddlebrown;
+    border: 1px solid rgb(203, 145, 221);
     display: grid;
     place-items: center;
     height: min(30vw, 200px);
@@ -41,8 +47,8 @@ body div div {
 }
 
 .win {
-    background-color: aquamarine;
-    font-size: calc(4rem + 6vw)
+    background-color: rgba(128, 255, 212, 0.6);
+    font-size: calc(4rem + 6vw);
 }
 
 .overlay {
@@ -50,9 +56,34 @@ body div div {
     position: absolute;
     height: min(90vw, 600px);
     width: min(90vw, 600px);
-    background-color: palevioletred;
+    /* background-color: palevioletred; */
 }
 
 .result {
     font-size: calc(2rem + 5vw);
+}
+
+.buttons {
+    /* border: 1px solid seagreen; */
+    display: flex;
+    gap: calc(2px + 5vw);
+    margin-top: 20vh;
+    width: min(90vw, 600px);
+    justify-content: center;
+}
+
+.buttons button {
+background-color: rgba(234, 76, 137, 0.8);
+border-radius: 3rem;
+border-style: none;
+color: #ffffff;
+cursor: pointer;
+width: 140px;
+height: 40px;
+font-size: 0.8rem;
+padding: 4px;
+}
+
+.buttons button:active {
+    background-color: rgba(239, 81, 142, 0.8);
 }
