@@ -22,25 +22,10 @@ const gameObj = (() => {
 
     const getPlayerNames = (e) => {
         e.preventDefault();
-        // player1Name();
-        // player2Name();
-        // location.reload();
         player1.name = document.querySelector('#player1').value;
         player2.name = document.querySelector('#player2').value;
         ui.exitForm();
     }
-
-    // const player1Name = () => {
-    //     let name = document.querySelector('#player1').value;
-    //     let player1Name = name === '' ? 'Player 1' : name;
-    //     return player1Name
-    // }
-
-    // const player2Name = () => {
-    //     let name = document.querySelector('#player2').value;
-    //     let player2Name = name === '' ? 'Player 2' : name;
-    //     return player2Name;
-    // }
 
     return {
         gameboard,
@@ -49,8 +34,6 @@ const gameObj = (() => {
         getBoxes,
         clearObj,
         getPlayerNames,
-        // player1Name,
-        // player2Name,
     }
 })();
 
@@ -174,28 +157,25 @@ const gameLogic = (() => {
     }
 
     const determineWinner = () => {
-        //only executes after four turns
-        if(gameObj.nullCounter().length > 4) {
-            if(didPlayer2Win == null) didPlayer1Win = matchBoxes(player1);
-            if(didPlayer1Win == null) didPlayer2Win = matchBoxes(player2);
-            winner();
-        }
+        if(didPlayer2Win == null) didPlayer1Win = matchBoxes(player1);
+        if(didPlayer1Win == null) didPlayer2Win = matchBoxes(player2);
+        winner();
     }
 
     const winner = () => {
-        if(didPlayer1Win == true) {
+        if(didPlayer1Win === true) {
             ui.highlightWin();
             ui.overlay();
             ui.displayResult();
             document.querySelector('.overlay').addEventListener('click', ui.clearBoard);
         };
-        if(didPlayer2Win == true) {
+        if(didPlayer2Win === true) {
             ui.highlightWin();
             ui.overlay();
             ui.displayResult();
             document.querySelector('.overlay').addEventListener('click', ui.clearBoard);
         };
-        if(gameObj.nullCounter().length == 9 && didPlayer1Win == null && didPlayer2Win == null) {
+        if(gameObj.nullCounter().length === 9 && didPlayer1Win === null && didPlayer2Win === null) {
             ui.overlay();
             ui.displayResult();
             document.querySelector('.overlay').addEventListener('click', ui.clearBoard);
@@ -209,7 +189,6 @@ const gameLogic = (() => {
         if(didPlayer2Win == true) {
             return player2;
         };
-        //log draw if no player matched one of the winning conditions
         if(gameObj.nullCounter().length == 9) {
             return null;
         }
