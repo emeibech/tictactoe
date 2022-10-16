@@ -232,29 +232,29 @@ const ui = (() => {
 
     const overlay = () => {
         container.classList.add('overlay');
-        const aside = document.querySelector('.gameboard aside');
-        gameObj.boxes[0].parentElement.insertBefore(container, aside);
+        const ref = document.querySelector('.gameboard aside');
+        gameObj.boxes[0].parentElement.insertBefore(container, ref);
     }
 
     const displayResult = () => {
-            const result = (player) => {
-                if(player !== null && player.hasOwnProperty('name')) {
-                    const body = document.querySelector('body');
-                    const para = document.createElement('p');
-                    para.textContent = `${player.name} Wins!`;
-                    para.classList.add('result');
-                    body.appendChild(para);
-                }
-                if(player === null) {
-                    const body = document.querySelector('body');
-                    const para = document.createElement('p');
-                    para.textContent = 'Draw!';
-                    para.classList.add('result');
-                    body.appendChild(para);
-                }
+        const result = (player) => {
+            if(player !== null && player.hasOwnProperty('name')) {
+                const resultDiv = document.querySelector('.result-container');
+                const para = document.createElement('p');
+                para.textContent = `${player.name} Wins!`;
+                para.classList.add('result');
+                resultDiv.appendChild(para);
             }
+            if(player === null) {
+                const resultDiv = document.querySelector('.result-container');
+                const para = document.createElement('p');
+                para.textContent = 'Draw!';
+                para.classList.add('result');
+                resultDiv.appendChild(para);
+            }
+        }
 
-            result(gameLogic.getWinner());
+        result(gameLogic.getWinner());
     }
 
     const clearBoard = () => {
@@ -265,7 +265,7 @@ const ui = (() => {
         const result = document.querySelector('.result');
         const overlay = document.querySelector('.overlay');
         if(result !== null && overlay !== null) {
-            document.querySelector('body').removeChild(result);
+            document.querySelector('.result-container').removeChild(result);
             document.querySelector('.gameboard').removeChild(overlay);
         }
         
@@ -274,10 +274,12 @@ const ui = (() => {
 
     const exitForm = () => {
         document.querySelector('.form-group').classList.add('hide-form');
+        document.querySelector('.form-group').setAttribute('style', 'display: none')
     }
 
     const showForm = () => {
         document.querySelector('.form-group').classList.remove('hide-form');
+        document.querySelector('.form-group').setAttribute('style', 'display: grid');
     }
 
     return {

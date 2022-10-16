@@ -10,10 +10,8 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-    <div class="buttons">
-        <button class="change-name">Players' Names</button>
-        <button class="reset">Reset</button>
-    </div>
+    <header><h1>Tic-Tac-Toe</h1></header>
+    <div class="result-container"></div>
     <div class="gameboard">
         <div data-box="0"></div>
         <div data-box="1"></div>
@@ -28,13 +26,16 @@
                 <form >
                     <button class="exit">X</button>
                     <label for="player1">Player 1 (X)</label>
-                    <input id="player1" type="text" maxlength="32" required>
+                    <input id="player1" type="text" maxlength="24" required>
                     <label for="player2">Player 2 (O)</label>
-                    <input type="text" id="player2" maxlength="32" required>
+                    <input type="text" id="player2" maxlength="24" required>
                     <button class="submit">Submit</button>
-                    <!-- <div class="exit"></div> -->
                 </form>
         </aside>
+    </div>
+    <div class="buttons">
+        <button class="change-name">Players' Names</button>
+        <button class="reset">Reset</button>
     </div>
 </body>
 </html>
